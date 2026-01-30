@@ -297,11 +297,11 @@ const updateButtonColors = (): void => {
   const lighterColor = adjustColorBrightness(color, 20);
   downloadBtn.style.setProperty('--btn-hover-color', lighterColor);
   
-  // Update header background
-  const header = document.querySelector('.header');
-  if (header) {
-    header.style.backgroundColor = color;
-  }
+	  // Update header background
+	  const header = document.querySelector('.header') as HTMLElement;
+	  if (header) {
+	    header.style.backgroundColor = color;
+	  }
   
   // Update loading spinner color
   const style = document.createElement('style');
