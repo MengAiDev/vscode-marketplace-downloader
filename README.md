@@ -14,9 +14,7 @@ A Chrome browser extension that allows you to download VS Code extensions direct
 - 🔒 **Privacy Focused**: No data collection, runs entirely locally in your browser
 
 ## Installation
-
-### From Chrome Web Store
-Coming soon!
+Download our release!
 
 ### Manual Installation (Developer Mode)
 
@@ -98,16 +96,6 @@ vscode-marketplace-downloader/
   - `storage`: Store extension preferences
   - `downloads`: Download extension files
 
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
@@ -120,12 +108,3 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## Support
 
 If you encounter any issues or have questions, please open an issue on GitHub.
-
-## Changelog
-
-### 1.0.0 (2024-01-30)
-- Initial release
-- Direct download functionality
-- Inline download button injection
-- Extension details popup
-- API-based extension information retrieval
