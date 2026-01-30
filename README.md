@@ -2,6 +2,8 @@
 
 A Chrome browser extension that allows you to download VS Code extensions directly from the Visual Studio Marketplace.
 
+![pic](use.png)
+
 ## Features
 
 - 🚀 **Direct Download**: Download .VSIX files directly from VS Code Marketplace without navigating through the web interface
