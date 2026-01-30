@@ -6,17 +6,37 @@
 import { extractExtensionIdFromUrl, isMarketplaceExtensionPage } from '../utils/marketplaceApi';
 
 const STORAGE_KEY = 'vscode-downloader-extension-id';
+const SETTINGS_KEY = 'vscode-downloader-settings';
 const CONTAINER_ID = 'vscode-downloader-container';
 const BUTTON_ID = 'vscode-downloader-btn';
 const LOADING_ID = 'vscode-downloader-loading';
 const STATUS_ID = 'vscode-downloader-status';
 const POPUP_ID = 'vscode-downloader-popup';
 
+interface ExtensionSettings {
+  darkMode: boolean;
+  buttonColor: string;
+}
+
+/**
+ * Load settings from storage
+ */
+const loadSettings = async (): Promise<ExtensionSettings> => {
+  try {
+    const result = await chrome.storage.local.get([SETTINGS_KEY]);
+    return result[SETTINGS_KEY] || { darkMode: false, buttonColor: '#007acc' };
+  } catch (error) {
+    console.error('Error loading settings:', error);
+    return { darkMode: false, buttonColor: '#007acc' };
+  }
+};
+
 /**
  * Inject CSS styles for the download button and popup
  */
-const injectStyles = (): void => {
+const injectStyles = async (buttonColor: string): Promise<void> => {
   const style = document.createElement('style');
+  style.id = 'vscode-downloader-styles';
   style.textContent = `
     #${CONTAINER_ID} {
       display: flex;
@@ -26,7 +46,7 @@ const injectStyles = (): void => {
     }
     
     #${BUTTON_ID} {
-      background: #007acc;
+      background: ${buttonColor};
       color: white;
       border: none;
       padding: 12px 24px;
@@ -42,7 +62,7 @@ const injectStyles = (): void => {
     }
     
     #${BUTTON_ID}:hover {
-      background: #005a9e;
+      background: ${adjustColorBrightness(buttonColor, -20)};
     }
     
     #${BUTTON_ID}:disabled {
@@ -84,6 +104,18 @@ const injectStyles = (): void => {
     }
   `;
   document.head.appendChild(style);
+};
+
+/**
+ * Adjust color brightness
+ */
+const adjustColorBrightness = (hexColor: string, amount: number): string => {
+  const color = hexColor.replace('#', '');
+  const num = parseInt(color, 16);
+  const r = Math.min(255, Math.max(0, (num >> 16) + amount));
+  const g = Math.min(255, Math.max(0, ((num >> 8) & 0x00FF) + amount));
+  const b = Math.min(255, Math.max(0, (num & 0x0000FF) + amount));
+  return `#${(1 << 24 | r << 16 | g << 8 | b).toString(16).slice(1)}`;
 };
 
 /**
@@ -152,7 +184,7 @@ const showStatus = (message: string, type: 'success' | 'error' | 'info'): void =
 /**
  * Inject download button into the page
  */
-const injectDownloadButton = (): void => {
+const injectDownloadButton = async (): Promise<void> => {
   // Check if button already exists
   if (document.getElementById(CONTAINER_ID)) {
     return;
@@ -180,7 +212,9 @@ const injectDownloadButton = (): void => {
     return;
   }
 
-  injectStyles();
+  // Load settings and apply custom button color
+  const settings = await loadSettings();
+  await injectStyles(settings.buttonColor);
 
   const container = document.createElement('div');
   container.id = CONTAINER_ID;
