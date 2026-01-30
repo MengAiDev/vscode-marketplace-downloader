@@ -14,7 +14,7 @@ A Chrome browser extension that allows you to download VS Code extensions direct
 - 🔒 **Privacy Focused**: No data collection, runs entirely locally in your browser
 
 ## Installation
-Download our release!
+Download our [release](https://github.com/MengAiDev/vscode-marketplace-downloader/releases) !
 
 ### Manual Installation (Developer Mode)
 
